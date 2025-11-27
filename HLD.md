@@ -38,19 +38,19 @@ The Communication Aggregator System is a 3-microservice architecture designed to
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                         Client/API                               │
+│                         Client/API                              | 
 └────────────────────────────┬────────────────────────────────────┘
                              │
                              │ REST API (POST /api/v1/messages)
                              │
                              ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    Task Router Service                           │
-│                    (Port 3000)                                   │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
-│  │ Validation   │  │ Duplicate     │  │ Retry        │          │
-│  │              │  │ Detection    │  │ Handler     │          │
-│  └──────────────┘  └──────────────┘  └──────────────┘          │
+│                    Task Router Service                          |
+│                    (Port 3000)                                  |
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐           |
+│  │ Validation   │  │ Duplicate    │  │ Retry        │           │
+│  │              │  │ Detection    │  │ Handler      |           |
+│  └──────────────┘  └──────────────┘  └──────────────┘           |
 │         │                  │                  │                 │
 └─────────┼──────────────────┼──────────────────┼─────────────────┘
           │                  │                  │
@@ -69,12 +69,12 @@ The Communication Aggregator System is a 3-microservice architecture designed to
           │
           ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    Delivery Service                              │
-│                    (Port 3001)                                   │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
-│  │ Email        │  │ SMS          │  │ WhatsApp     │          │
-│  │ Handler      │  │ Handler      │  │ Handler      │          │
-│  └──────────────┘  └──────────────┘  └──────────────┘          │
+│                    Delivery Service                             │
+│                    (Port 3001)                                  │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐           │
+│  │ Email        │  │ SMS          │  │ WhatsApp     │           │
+│  │ Handler      │  │ Handler      │  │ Handler      │           │ 
+│  └──────────────┘  └──────────────┘  └──────────────┘           │
 │         │                  │                  │                 │
 └─────────┼──────────────────┼──────────────────┼─────────────────┘
           │                  │                  │
@@ -93,8 +93,8 @@ The Communication Aggregator System is a 3-microservice architecture designed to
                              │
                              ▼
                     ┌─────────────────┐
-                    │     Kibana       │
-                    │  (Visualization) │
+                    │     Kibana      │
+                    │ (Visualization) │
                     └─────────────────┘
 ```
 
