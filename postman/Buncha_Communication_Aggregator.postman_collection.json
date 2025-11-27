@@ -1,0 +1,416 @@
+{
+	"info": {
+		"_postman_id": "buncha-comm-aggregator-001",
+		"name": "Buncha Communication Aggregator",
+		"description": "API collection for Communication Aggregator System - 3 Microservices Architecture",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Task Router Service",
+			"item": [
+				{
+					"name": "Send Email Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"channel\": \"email\",\n  \"recipient\": \"user@example.com\",\n  \"body\": \"Hello, this is a test email message\",\n  \"subject\": \"Test Email Subject\",\n  \"metadata\": {\n    \"priority\": \"high\",\n    \"template\": \"welcome\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/messages",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Send an email message through the Task Router Service"
+					},
+					"response": []
+				},
+				{
+					"name": "Send SMS Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"channel\": \"sms\",\n  \"recipient\": \"+1234567890\",\n  \"body\": \"Your verification code is 123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/messages",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Send an SMS message through the Task Router Service"
+					},
+					"response": []
+				},
+				{
+					"name": "Send WhatsApp Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"channel\": \"whatsapp\",\n  \"recipient\": \"+1234567890\",\n  \"body\": \"Your order #12345 has been shipped!\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/messages",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Send a WhatsApp message through the Task Router Service"
+					},
+					"response": []
+				},
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Check the health status of Task Router Service"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Duplicate Detection",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"channel\": \"email\",\n  \"recipient\": \"test@example.com\",\n  \"body\": \"This is a duplicate test message\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/messages",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Send the same request twice to test duplicate detection. First request should succeed (202), second should return 409 Conflict."
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Channel",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"channel\": \"telegram\",\n  \"recipient\": \"@username\",\n  \"body\": \"Test message\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/messages",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Test validation - should return 400 Bad Request for invalid channel"
+					},
+					"response": []
+				},
+				{
+					"name": "Missing Required Fields",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"channel\": \"email\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/messages",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Test validation - should return 400 Bad Request for missing required fields"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for Task Router Service (Port 3000)"
+		},
+		{
+			"name": "Delivery Service",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{delivery_service_url}}/health",
+							"host": [
+								"{{delivery_service_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Check the health status of Delivery Service"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for Delivery Service (Port 3001)"
+		},
+		{
+			"name": "Logging Service",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{logging_service_url}}/health",
+							"host": [
+								"{{logging_service_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Check the health status of Logging Service"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Logs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{logging_service_url}}/api/v1/logs/search?level=error&size=10",
+							"host": [
+								"{{logging_service_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"logs",
+								"search"
+							],
+							"query": [
+								{
+									"key": "level",
+									"value": "error",
+									"description": "Filter by log level (info, error, warn, debug)"
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"description": "Number of results to return"
+								},
+								{
+									"key": "service",
+									"value": "",
+									"description": "Filter by service name",
+									"disabled": true
+								},
+								{
+									"key": "query",
+									"value": "",
+									"description": "Search query text",
+									"disabled": true
+								},
+								{
+									"key": "traceId",
+									"value": "",
+									"description": "Filter by trace ID",
+									"disabled": true
+								}
+							],
+							"description": "Search logs with various filters. Use query parameters to filter by level, service, traceId, or search text."
+						},
+						"response": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Logs by Trace ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{logging_service_url}}/api/v1/logs/trace/:traceId",
+							"host": [
+								"{{logging_service_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"logs",
+								"trace",
+								":traceId"
+							],
+							"variable": [
+								{
+									"key": "traceId",
+									"value": "paste-trace-id-here",
+									"description": "Trace ID from message response"
+								}
+							],
+							"description": "Get all logs for a specific trace ID. Replace :traceId with actual trace ID from message response."
+						},
+						"response": []
+					},
+					"response": []
+				},
+				{
+					"name": "Search Logs by Service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{logging_service_url}}/api/v1/logs/search?service=task-router-service&size=20",
+							"host": [
+								"{{logging_service_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"logs",
+								"search"
+							],
+							"query": [
+								{
+									"key": "service",
+									"value": "task-router-service"
+								},
+								{
+									"key": "size",
+									"value": "20"
+								}
+							],
+							"description": "Search logs filtered by service name"
+						},
+						"response": []
+					},
+					"response": []
+				},
+				{
+					"name": "Search All Logs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{logging_service_url}}/api/v1/logs/search?size=50",
+							"host": [
+								"{{logging_service_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"logs",
+								"search"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "50"
+								}
+							],
+							"description": "Get all logs (no filters)"
+						},
+						"response": []
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for Logging Service (Port 4000)"
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "delivery_service_url",
+			"value": "http://localhost:3001",
+			"type": "string"
+		},
+		{
+			"key": "logging_service_url",
+			"value": "http://localhost:4000",
+			"type": "string"
+		}
+	]
+}
+
