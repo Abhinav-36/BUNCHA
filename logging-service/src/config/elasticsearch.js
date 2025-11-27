@@ -4,18 +4,28 @@ let client = null;
 const INDEX_NAME = 'message-logs';
 
 async function connectElasticsearch() {
-  try {
-    const url = process.env.ELASTICSEARCH_URL || 'http://localhost:9200';
-    client = new Client({ node: url });
-    
-    // Test connection
-    const health = await client.cluster.health();
-    console.log('Connected to Elasticsearch:', health.status);
-    
-    return client;
-  } catch (error) {
-    console.error('Elasticsearch connection error:', error.message);
-    throw error;
+  const url = process.env.ELASTICSEARCH_URL || 'http://localhost:9200';
+  const maxRetries = 10;
+  const retryDelay = 3000; // 3 seconds
+  
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      console.log(`Attempting to connect to Elasticsearch (attempt ${attempt}/${maxRetries})...`);
+      client = new Client({ node: url });
+      
+      // Test connection
+      const health = await client.cluster.health();
+      console.log('✅ Successfully connected to Elasticsearch:', health.status);
+      
+      return client;
+    } catch (error) {
+      if (attempt === maxRetries) {
+        console.error(`❌ Failed to connect to Elasticsearch after ${maxRetries} attempts:`, error.message);
+        throw error;
+      }
+      console.log(`⏳ Elasticsearch not ready, retrying in ${retryDelay}ms...`);
+      await new Promise(resolve => setTimeout(resolve, retryDelay));
+    }
   }
 }
 

@@ -12,25 +12,37 @@ const QUEUES = {
 };
 
 async function connectRabbitMQ() {
-  try {
-    const url = process.env.RABBITMQ_URL || 'amqp://localhost:5672';
-    connection = await amqp.connect(url);
-    channel = await connection.createChannel();
-    
-    // Declare queues
-    await channel.assertQueue(QUEUES.EMAIL, { durable: true });
-    await channel.assertQueue(QUEUES.SMS, { durable: true });
-    await channel.assertQueue(QUEUES.WHATSAPP, { durable: true });
-    await channel.assertQueue(QUEUES.RETRY, { durable: true });
-    
-    // Set prefetch to process one message at a time
-    await channel.prefetch(1);
-    
-    logger.info('Connected to RabbitMQ and queues declared');
-    return { connection, channel, queues: QUEUES };
-  } catch (error) {
-    logger.error('RabbitMQ connection error', { error: error.message });
-    throw error;
+  const url = process.env.RABBITMQ_URL || 'amqp://localhost:5672';
+  const maxRetries = 10;
+  const retryDelay = 3000; // 3 seconds
+  
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      console.log(`Attempting to connect to RabbitMQ (attempt ${attempt}/${maxRetries})...`);
+      connection = await amqp.connect(url);
+      channel = await connection.createChannel();
+      
+      // Declare queues
+      await channel.assertQueue(QUEUES.EMAIL, { durable: true });
+      await channel.assertQueue(QUEUES.SMS, { durable: true });
+      await channel.assertQueue(QUEUES.WHATSAPP, { durable: true });
+      await channel.assertQueue(QUEUES.RETRY, { durable: true });
+      
+      // Set prefetch to process one message at a time
+      await channel.prefetch(1);
+      
+      logger.info('Connected to RabbitMQ and queues declared');
+      console.log('✅ Successfully connected to RabbitMQ');
+      return { connection, channel, queues: QUEUES };
+    } catch (error) {
+      if (attempt === maxRetries) {
+        logger.error('RabbitMQ connection failed after max retries', { error: error.message });
+        console.error(`❌ Failed to connect to RabbitMQ after ${maxRetries} attempts:`, error.message);
+        throw error;
+      }
+      console.log(`⏳ RabbitMQ not ready, retrying in ${retryDelay}ms...`);
+      await new Promise(resolve => setTimeout(resolve, retryDelay));
+    }
   }
 }
 

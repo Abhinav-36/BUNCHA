@@ -4,27 +4,39 @@ const logger = require('../utils/logger');
 let pool = null;
 
 async function connectDatabase() {
-  try {
-    const connectionString = process.env.DATABASE_URL || 
-      'postgresql://postgres:postgres123@localhost:5432/message_delivery';
-    
-    pool = new Pool({
-      connectionString,
-      max: 20,
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 2000,
-    });
+  const connectionString = process.env.DATABASE_URL || 
+    'postgresql://postgres:postgres123@localhost:5432/message_delivery';
+  const maxRetries = 10;
+  const retryDelay = 3000; // 3 seconds
+  
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      console.log(`Attempting to connect to PostgreSQL (attempt ${attempt}/${maxRetries})...`);
+      
+      pool = new Pool({
+        connectionString,
+        max: 20,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 2000,
+      });
 
-    // Test connection
-    const client = await pool.connect();
-    await client.query('SELECT NOW()');
-    client.release();
-    
-    logger.info('Connected to PostgreSQL database');
-    return pool;
-  } catch (error) {
-    logger.error('Database connection error', { error: error.message });
-    throw error;
+      // Test connection
+      const client = await pool.connect();
+      await client.query('SELECT NOW()');
+      client.release();
+      
+      logger.info('Connected to PostgreSQL database');
+      console.log('✅ Successfully connected to PostgreSQL');
+      return pool;
+    } catch (error) {
+      if (attempt === maxRetries) {
+        logger.error('Database connection failed after max retries', { error: error.message });
+        console.error(`❌ Failed to connect to PostgreSQL after ${maxRetries} attempts:`, error.message);
+        throw error;
+      }
+      console.log(`⏳ PostgreSQL not ready, retrying in ${retryDelay}ms...`);
+      await new Promise(resolve => setTimeout(resolve, retryDelay));
+    }
   }
 }
 
