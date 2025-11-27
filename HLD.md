@@ -36,67 +36,7 @@ The Communication Aggregator System is a 3-microservice architecture designed to
 
 ## 2. Architecture Diagram
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                         Client/API                              | 
-└────────────────────────────┬────────────────────────────────────┘
-                             │
-                             │ REST API (POST /api/v1/messages)
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    Task Router Service                          |
-│                    (Port 3000)                                  |
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐           |
-│  │ Validation   │  │ Duplicate    │  │ Retry        │           │
-│  │              │  │ Detection    │  │ Handler      |           |
-│  └──────────────┘  └──────────────┘  └──────────────┘           |
-│         │                  │                  │                 │
-└─────────┼──────────────────┼──────────────────┼─────────────────┘
-          │                  │                  │
-          │                  │                  │
-          ▼                  ▼                  ▼
-    ┌─────────┐        ┌─────────┐        ┌─────────┐
-    │ RabbitMQ│        │  Redis  │        │ Logging │
-    │ Queues  │        │ (Dup)   │        │ Service │
-    └─────────┘        └─────────┘        └─────────┘
-          │
-          │ Message Queues:
-          │ - email_delivery_queue
-          │ - sms_delivery_queue
-          │ - whatsapp_delivery_queue
-          │ - retry_queue
-          │
-          ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    Delivery Service                             │
-│                    (Port 3001)                                  │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐           │
-│  │ Email        │  │ SMS          │  │ WhatsApp     │           │
-│  │ Handler      │  │ Handler      │  │ Handler      │           │ 
-│  └──────────────┘  └──────────────┘  └──────────────┘           │
-│         │                  │                  │                 │
-└─────────┼──────────────────┼──────────────────┼─────────────────┘
-          │                  │                  │
-          │                  │                  │
-          ▼                  ▼                  ▼
-    ┌─────────┐        ┌─────────┐        ┌─────────┐
-    │PostgreSQL│       │ Logging │        │ RabbitMQ│
-    │ (Storage)│       │ Service │        │ (Retry) │
-    └─────────┘        └─────────┘        └─────────┘
-                              │
-                              ▼
-                    ┌─────────────────┐
-                    │  Elasticsearch  │
-                    │  (Log Storage)  │
-                    └────────┬────────┘
-                             │
-                             ▼
-                    ┌─────────────────┐
-                    │     Kibana      │
-                    │ (Visualization) │
-                    └─────────────────┘
-```
+<img width="3264" height="1970" alt="Communication Aggregator HLD (2)" src="https://github.com/user-attachments/assets/64e8e4e7-5009-4cf7-8962-3151a1206a15" />
 
 ---
 
