@@ -10,6 +10,12 @@ The system consists of three independent microservices:
 2. **Delivery Service** (Port 3001) - Consumes messages, simulates delivery, stores in database
 3. **Logging Service** (Port 4000) - Collects logs from all services, stores in Elasticsearch
 
+<img width="3264" height="1970" alt="Communication Aggregator HLD (2)" src="https://github.com/user-attachments/assets/40fee1e6-8471-4280-a07e-841f7c4d6e16" />
+
+
+
+
+
 ### Supporting Infrastructure
 
 - **RabbitMQ** (Port 5672, Management UI: 15672) - Message queue
@@ -379,7 +385,6 @@ For more troubleshooting tips, see [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
 
 - [High-Level Design Document](./HLD.md) - Detailed architecture and design decisions
 - [Postman Collection](./postman/) - API testing collection with examples
-- [Quick Start Guide](./QUICK_START.md) - Quick reference for common tasks
 
 ## 🔐 Default Credentials
 
