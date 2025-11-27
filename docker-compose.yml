@@ -2,7 +2,7 @@ services:
   # RabbitMQ for message queue
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: buncha-rabbitmq
+    container_name: rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -18,7 +18,7 @@ services:
   # Redis for duplicate detection
   redis:
     image: redis:7-alpine
-    container_name: buncha-redis
+    container_name: redis
     ports:
       - "6379:6379"
     healthcheck:
@@ -30,7 +30,7 @@ services:
   # PostgreSQL for Delivery Service
   postgres:
     image: postgres:15-alpine
-    container_name: buncha-postgres
+    container_name: postgres
     ports:
       - "5432:5432"
     environment:
@@ -48,7 +48,7 @@ services:
   # Elasticsearch for logging
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
-    container_name: buncha-elasticsearch
+    container_name: elasticsearch
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -67,7 +67,7 @@ services:
   # Kibana for log visualization
   kibana:
     image: docker.elastic.co/kibana/kibana:8.11.0
-    container_name: buncha-kibana
+    container_name: kibana
     ports:
       - "5601:5601"
     environment:
@@ -81,7 +81,7 @@ services:
     build:
       context: ./task-router-service
       dockerfile: Dockerfile
-    container_name: buncha-task-router
+    container_name: task-router
     ports:
       - "3000:3000"
     environment:
@@ -104,7 +104,7 @@ services:
     build:
       context: ./delivery-service
       dockerfile: Dockerfile
-    container_name: buncha-delivery-service
+    container_name: delivery-service
     ports:
       - "3001:3001"
     environment:
@@ -127,7 +127,7 @@ services:
     build:
       context: ./logging-service
       dockerfile: Dockerfile
-    container_name: buncha-logging-service
+    container_name: logging-service
     ports:
       - "4000:4000"
     environment:
