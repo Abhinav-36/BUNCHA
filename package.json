@@ -1,0 +1,21 @@
+{
+  "name": "buncha-communication-aggregator",
+  "version": "1.0.0",
+  "description": "Communication Aggregator System - 3 Microservices Architecture",
+  "main": "index.js",
+  "scripts": {
+    "start:all": "docker-compose up -d",
+    "stop:all": "docker-compose down",
+    "logs": "docker-compose logs -f",
+    "setup": "npm install && cd task-router-service && npm install && cd ../delivery-service && npm install && cd ../logging-service && npm install"
+  },
+  "keywords": [
+    "microservices",
+    "rabbitmq",
+    "nodejs",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC"
+}
+
