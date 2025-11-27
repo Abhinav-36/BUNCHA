@@ -10,7 +10,8 @@ The system consists of three independent microservices:
 2. **Delivery Service** (Port 3001) - Consumes messages, simulates delivery, stores in database
 3. **Logging Service** (Port 4000) - Collects logs from all services, stores in Elasticsearch
 
-<img width="8224" height="1733" alt="image" src="https://github.com/user-attachments/assets/e940c549-acfb-4fbd-9a4d-f17592b2ac15" />
+<img width="3264" height="1970" alt="Communication Aggregator HLD (1)" src="https://github.com/user-attachments/assets/a5d00265-354c-4a6f-9f24-a03db077bbc1" />
+
 
 
 
