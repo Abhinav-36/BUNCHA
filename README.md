@@ -379,7 +379,6 @@ For more troubleshooting tips, see [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
 
 - [High-Level Design Document](./HLD.md) - Detailed architecture and design decisions
 - [Postman Collection](./postman/) - API testing collection with examples
-- [Quick Start Guide](./QUICK_START.md) - Quick reference for common tasks
 
 ## 🔐 Default Credentials
 
