@@ -45,7 +45,7 @@ function validateMessage(req, res, next) {
 
   logger.info('Message validation passed', {
     channel: channel.toLowerCase(),
-    recipient: recipient.substring(0, 10) + '...' // Log partial recipient for privacy
+    recipient: recipient
   });
 
   next();

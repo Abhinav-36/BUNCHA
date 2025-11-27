@@ -38,7 +38,7 @@ async function sendMessage(req, res) {
       messageId,
       traceId,
       channel: channel.toLowerCase(),
-      recipient,
+      recipient,  
       body,
       subject: subject || null,
       metadata: metadata || {},
