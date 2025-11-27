@@ -10,6 +10,9 @@ The system consists of three independent microservices:
 2. **Delivery Service** (Port 3001) - Consumes messages, simulates delivery, stores in database
 3. **Logging Service** (Port 4000) - Collects logs from all services, stores in Elasticsearch
 
+<img width="2048" height="2048" alt="Gemini_Generated_Image_b1b571b1b571b1b5" src="https://github.com/user-attachments/assets/49a3e59f-a192-4709-ad32-38265e3b1fbb" />
+
+
 ### Supporting Infrastructure
 
 - **RabbitMQ** (Port 5672, Management UI: 15672) - Message queue
